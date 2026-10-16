@@ -6,6 +6,10 @@ import { fileURLToPath } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const standalone = path.join(root, ".next/standalone");
 
+// The standalone server runs from .next/standalone, so load the project .env here.
+// Variables already set in the environment win.
+if (existsSync(path.join(root, ".env"))) process.loadEnvFile(path.join(root, ".env"));
+
 if (!existsSync(path.join(standalone, "server.js"))) {
   console.error("No standalone build found. Run pnpm build first.");
   process.exit(1);

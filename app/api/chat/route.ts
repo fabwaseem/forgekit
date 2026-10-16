@@ -71,6 +71,8 @@ export async function POST(request: Request) {
       stream: result.stream,
       originalMessages: messages,
       sendSources: true,
+      // Give assistant messages a stable id so each reply saves as its own row.
+      generateMessageId: () => crypto.randomUUID(),
       onEnd: async ({ messages: nextMessages, isAborted }) => {
         if (isAborted) return;
         await saveMessages(chat.id, nextMessages, body.modelId!);
